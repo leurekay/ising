@@ -10,14 +10,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pylab
 start_time=time.time()
-L=20
+L=16
 
-Low=0.5
-High=5.5
+Low=0.3
+High=5.7
 Interval=0.1
 mc_steps=8000
 T_list=np.arange(Low,High,Interval)
-T_list=np.append(T_list,np.arange(1.65,2.65,0.04))
+T_list=np.append(T_list,np.arange(1.85,2.65,0.04))
 T_list.sort()
 steps=mc_steps*L**2
 
@@ -47,7 +47,7 @@ for T in T_list:
             conf[x][y]=-1*conf[x][y]
             M=M+2*conf[x][y]
             E=E+delta_E
-        if step>steps/2 and steps%(L**2)==0:
+        if step>steps/2 and step%(L)==0:
         #if step>steps/2 :
             sample=sample+1
             M_total=M_total+M
@@ -58,7 +58,9 @@ for T in T_list:
     E2_mean=E2_total/sample
     Cv=(E2_mean-E_mean**2)/T**2/L**4
     m_list.append(abs(m))  
-    Cv_list.append(Cv*100)
+    Cv_list.append(Cv)
+maxCv=max(Cv_list)
+Cv_list=[i*1.2/maxCv for i in Cv_list]
 run_time=time.time()-start_time    
 #plt.figure(figsize=(20,10))
 #plt.plot(T_list,m_list,color="blue",linewidth=1.5,label="mc")    
